@@ -45,8 +45,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @PostMapping("/automobiles")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
-    //@RolesAllowed("ADMIN")
+    @PreAuthorize("hasRole('PERSON')")
     public Automobile saveAutomobile(@Valid @RequestBody Automobile automobile) {
         log.info("saveAutomobile() - start: automobile = {}", automobile);
         Automobile savedAutomobile = repository.save(automobile);
@@ -57,7 +56,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
     @GetMapping("/automobiles")
     @ResponseStatus(HttpStatus.OK)
     //@Cacheable(value = "automobile", sync = true)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public Collection<Automobile> getAllAutomobiles() {
         log.info("getAllAutomobiles() - start");
         Collection<Automobile> collection = repository.findAll();
@@ -67,6 +66,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @GetMapping("/automobiles/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
     //@Cacheable(value = "automobile", sync = true)
     public Automobile getAutomobileById(@PathVariable Long id) {
         log.info("getAutomobileById() - start: id = {}", id);
@@ -83,6 +83,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
     @Hidden
     @GetMapping(value = "/automobiles", params = {"name"})
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
     public Collection<Automobile> findAutomobileByName(@RequestParam(value = "name") String name) {
         log.info("findAutomobileByName() - start: name = {}", name);
         Collection<Automobile> collection = repository.findByName(name);
@@ -92,6 +93,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @PutMapping("/automobiles/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('PERSON')")
     //@CachePut(value = "automobile", key = "#id")
     public Automobile refreshAutomobile(@PathVariable Long id, @RequestBody Automobile automobile) {
         log.info("refreshAutomobile() - start: id = {}, automobile = {}", id, automobile);
@@ -115,6 +117,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
     @DeleteMapping("/automobiles/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(value = "automobile", key = "#id")
+    @PreAuthorize("hasRole('PERSON')")
     public String removeAutomobileById(@PathVariable Long id) {
         log.info("removeAutomobileById() - start: id = {}", id);
         Automobile deletedAutomobile = repository.findById(id)
@@ -128,6 +131,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
     @Hidden
     @DeleteMapping("/automobiles")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('PERSON')")
     public void removeAllAutomobiles() {
         log.info("removeAllAutomobiles() - start");
         repository.deleteAll();
@@ -136,6 +140,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @GetMapping(value = "/automobiles", params = {"color"})
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('PERSON')")
     public Collection<Automobile> findAutomobileByColor(
             @Parameter(description = "Name of the Automobile to be obtained. Cannot be empty.", required = true)
             @RequestParam(value = "color") String color) {
@@ -151,6 +156,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @GetMapping(value = "/automobiles", params = {"name", "color"})
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('PERSON')")
     public Collection<Automobile> findAutomobileByNameAndColor(
             @Parameter(description = "Name of the Automobile to be obtained. Cannot be empty.", required = true)
             @RequestParam(value = "name") String name, @RequestParam(value = "color") String color) {
@@ -162,6 +168,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @GetMapping(value = "/automobiles", params = {"colorStartsWith"})
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('PERSON')")
     public Collection<Automobile> findAutomobileByColorStartsWith(
             @RequestParam(value = "colorStartsWith") String colorStartsWith,
             @RequestParam(value = "page") int page,
@@ -175,6 +182,7 @@ public class AutomobileRestController implements AutomobileResource, AutomobileO
 
     @GetMapping("/automobiles-names")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('PERSON')")
     public List<String> getAllAutomobilesByName() {
         log.info("getAllAutomobilesByName() - start");
         List<Automobile> collection = repository.findAll();

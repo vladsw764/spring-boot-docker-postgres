@@ -11,7 +11,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     # For correct works with docker-compose, we need to change "localhost" to a service name, take from docker-compose.yml
     #url: jdbc:postgresql://db:5432/automobiles
-    url: jdbc:postgresql://localhost:5432/automobiles
+    url: jdbc:postgresql://localhost:5434/automobiles
     username: postgres
     password: postgres
   # JPA properties
@@ -29,6 +29,22 @@ spring:
       resource-server:
         jwt:
           issuer-uri: http://localhost:8180/realms/automobile-realm
+#          jwk-set-uri: http://localhost:8180/realms/automobile-realm/protocol/openid-connect/certs
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: automobile-client
+#            client-secret: s3OvAfdENbGCIZB8LuFTnpwseTlQXdX5
+#            scope:
+#              - openid
+#              - profile
+#              - email
+#              - offline_access
+#            redirect-uri: http://localhost:8080/test
+#            authorization-grant-type: authorization_code
+#        provider:
+#          keycloak:
+#            issuer-uri: http://localhost:8180/realms/automobile-realm
 # Server configuration
 server:
   port: 8080  #set your port
